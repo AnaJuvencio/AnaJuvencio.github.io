@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfólio de Ana Beatriz - Especialista em Machine Learning e Inteligência Artificial">
+    <title>Ana Beatriz | Portfólio</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">
+                    <span class="logo-text">Ana Beatriz</span>
+                </a>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" class="nav-link active">Início</a></li>
+                   <!--<li><a href="sobre.html" class="nav-link">Sobre</a></li>
+                    <li><a href="projetos.html" class="nav-link">Projetos</a></li>
+                    <li><a href="artigos.html" class="nav-link">Artigos</a></li>--> 
+                    <li><a href="contato.html" class="nav-link">Contato</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Olá, eu sou <span class="highlight">Ana Beatriz</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Sou técnica em Desenvolvimento de Sistemas e graduanda em Ciência da Computação na UFSCar. <!--<span class="typing-text">Machine Learning</span>--> 
+                    </p>
+                    <p class="hero-description">
+                       Atuo com automações de tarefas operacionais no Itaú Unibanco, desenvolvendo soluções em Python e outras linguagens, voltadas à eficiência e confiabilidade dos processos de TI.
+                       Tenho buscado me aprofundar em Ciência de Dados e Machine Learning para expandir esse olhar de automação para soluções mais analíticas e inteligentes.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="https://github.com/AnaJuvencio" class="btn btn-primary">Ver Projetos</a>
+                        <a href="contato.html" class="btn btn-secondary">Entre em Contato</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="image-wrapper">
+                        <img src="images/me.jpg" alt="Ana Beatriz" class="profile-img">
+                        <div class="image-decoration"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <!-- RESUMO SECTION 
+    <section class="summary">
+        <div class="container">
+            <h2 class="section-title">Destaques</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Machine Learning</h3>
+                    <p>Desenvolvimento de modelos preditivos e algoritmos de aprendizado de máquina para análise de dados complexos.</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Inteligência Artificial</h3>
+                    <p>Implementação de soluções de IA para automatização e otimização de processos.</p>
+                </div>
+                <div class="summary-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Análise de Dados</h3>
+                    <p>Extração de insights através de análise exploratória e visualização de dados.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+-->
+    <!-- PROJETOS DESTAQUE -->
+    <section class="featured-projects">
+        <div class="container">
+            <h2 class="section-title">Projetos em Destaque</h2>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="images/robo-com-lixo.jpg" alt="Projeto 1">
+                        <div class="project-overlay">
+                            <a href="https://github.com/AnaJuvencio/Classificacao-de-Lixo-Reciclavel" class="project-link">Ver Detalhes</a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Classificação de lixo reciclável</h3>
+                        <p>Algoritmo de ML para classificar diferentes tipos de lixo reciclável.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">CNN Baseline</span>
+                            <span class="tag">MobileNetV2 TL</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="images/falsa.jpg" alt="Projeto 2">
+                        <div class="project-overlay">
+                            <a href="https://github.com/AnaJuvencio/fake-news-detector" class="project-link">Ver Detalhes</a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Detector de Fake News</h3>
+                        <p>Implementando um sistema completo de detecção de fake news com foco especial em análise de fairness.</p>
+                        <div class="project-tags">
+                            <span class="tag">Random Forest</span>
+                            <span class="tag">Métricas de Fairness</span>
+                            <span class="tag">LocalStack </span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="images/dino-capa1.png" alt="Projeto 3">
+                        <div class="project-overlay">
+                            <a href="https://github.com/AnaJuvencio/Jogo-do-Dino" class="project-link">Ver Detalhes</a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>Jogo do Dino</h3>
+                        <p>Jogo do dino desenvolvido em Python, utilizando a biblioteca Pygame e Spritesheets.</p>
+                        <div class="project-tags">
+                            <span class="tag">MediaPipe</span>
+                            <span class="tag">Pygame</span>
+                            <span class="tag">Spritesheets</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="text-center">
+                <a href="https://github.com/AnaJuvencio" class="btn btn-outline">Ver Todos os Projetos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Ana Beatriz</h3>
+                    <p>Técnica em Desenvolvimento de Sistemas e graduanda em Ciência da Computação na UFSCar.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <!--<li><a href="sobre.html">Sobre</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="artigos.html">Artigos</a></li>-->
+                        <li><a href="contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/AnaJuvencio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/beatrizjuvencio" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:ana.juvencio01@gmail.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ana Beatriz. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

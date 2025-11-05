@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Projetos de Machine Learning e IA de Ana Beatriz">
+    <title>Projetos | Ana Beatriz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">
+                    <span class="logo-text">Ana Beatriz</span>
+                </a>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" class="nav-link">Início</a></li>
+                    <li><a href="sobre.html" class="nav-link">Sobre</a></li>
+                    <li><a href="projetos.html" class="nav-link active">Projetos</a></li>
+                    <li><a href="artigos.html" class="nav-link">Artigos</a></li>
+                    <li><a href="contato.html" class="nav-link">Contato</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Meus Projetos</h1>
+            <p class="page-subtitle">Soluções de Machine Learning e IA que desenvolvi</p>
+        </div>
+    </section>
+
+    <!-- FILTER SECTION -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="ml">Machine Learning</button>
+                <button class="filter-btn" data-filter="nlp">NLP</button>
+                <button class="filter-btn" data-filter="cv">Computer Vision</button>
+                <button class="filter-btn" data-filter="analytics">Analytics</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS SECTION -->
+    <section class="projects-section">
+        <div class="container">
+            <div class="projects-grid-detailed">
+                <!-- Projeto 1 -->
+                <article class="project-detailed" data-category="ml">
+                    <div class="project-image-detailed">
+                        <img src="images/project1.jpg" alt="Sistema de Recomendação">
+                        <div class="project-badges">
+                            <span class="badge badge-featured">Destaque</span>
+                        </div>
+                    </div>
+                    <div class="project-content-detailed">
+                        <h3>Sistema de Recomendação Inteligente</h3>
+                        <p class="project-description">
+                            Desenvolvimento de um sistema de recomendação personalizado utilizando algoritmos de 
+                            filtragem colaborativa e deep learning. O sistema analisa padrões de comportamento do 
+                            usuário para sugerir conteúdo relevante com alta precisão.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">Pandas</span>
+                            <span class="tech-tag">NumPy</span>
+                            <span class="tech-tag">Flask</span>
+                        </div>
+                        <div class="project-features">
+                            <h4>Principais Features:</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Filtragem colaborativa baseada em usuário e item</li>
+                                <li><i class="fas fa-check"></i> Modelo híbrido com deep learning</li>
+                                <li><i class="fas fa-check"></i> API RESTful para integração</li>
+                                <li><i class="fas fa-check"></i> Dashboard de métricas em tempo real</li>
+                            </ul>
+                        </div>
+                        <div class="project-links-detailed">
+                            <a href="https://github.com/AnaJuvencio" target="_blank" class="btn btn-outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                            <a href="#" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> Ver Demo
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Projeto 2 -->
+                <article class="project-detailed" data-category="nlp">
+                    <div class="project-image-detailed">
+                        <img src="images/project2.jpg" alt="Análise de Sentimentos">
+                        <div class="project-badges">
+                            <span class="badge badge-recent">Recente</span>
+                        </div>
+                    </div>
+                    <div class="project-content-detailed">
+                        <h3>Análise de Sentimentos com NLP</h3>
+                        <p class="project-description">
+                            Modelo de processamento de linguagem natural para análise de sentimentos em textos de 
+                            redes sociais. Utiliza transformers (BERT) para classificação multi-classe com alta 
+                            acurácia.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">PyTorch</span>
+                            <span class="tech-tag">BERT</span>
+                            <span class="tech-tag">Transformers</span>
+                            <span class="tech-tag">NLTK</span>
+                            <span class="tech-tag">FastAPI</span>
+                        </div>
+                        <div class="project-features">
+                            <h4>Principais Features:</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Classificação de sentimentos (positivo, negativo, neutro)</li>
+                                <li><i class="fas fa-check"></i> Pré-processamento avançado de texto</li>
+                                <li><i class="fas fa-check"></i> Suporte a múltiplos idiomas</li>
+                                <li><i class="fas fa-check"></i> Acurácia de 92% no dataset de teste</li>
+                            </ul>
+                        </div>
+                        <div class="project-links-detailed">
+                            <a href="https://github.com/AnaJuvencio" target="_blank" class="btn btn-outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                            <a href="#" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> Ver Demo
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Projeto 3 -->
+                <article class="project-detailed" data-category="cv">
+                    <div class="project-image-detailed">
+                        <img src="images/project3.jpg" alt="Detecção de Objetos">
+                    </div>
+                    <div class="project-content-detailed">
+                        <h3>Sistema de Detecção de Objetos</h3>
+                        <p class="project-description">
+                            Implementação de um sistema de detecção de objetos em tempo real usando redes neurais 
+                            convolucionais. Aplicação voltada para segurança e monitoramento inteligente.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">YOLO</span>
+                            <span class="tech-tag">OpenCV</span>
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">Keras</span>
+                        </div>
+                        <div class="project-features">
+                            <h4>Principais Features:</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Detecção em tempo real (30+ FPS)</li>
+                                <li><i class="fas fa-check"></i> Reconhecimento de múltiplas classes</li>
+                                <li><i class="fas fa-check"></i> Sistema de alerta automatizado</li>
+                                <li><i class="fas fa-check"></i> Interface web para visualização</li>
+                            </ul>
+                        </div>
+                        <div class="project-links-detailed">
+                            <a href="https://github.com/AnaJuvencio" target="_blank" class="btn btn-outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                            <a href="#" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> Ver Demo
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Projeto 4 -->
+                <article class="project-detailed" data-category="ml">
+                    <div class="project-image-detailed">
+                        <img src="images/project4.jpg" alt="Previsão de Séries Temporais">
+                    </div>
+                    <div class="project-content-detailed">
+                        <h3>Previsão de Séries Temporais</h3>
+                        <p class="project-description">
+                            Modelo preditivo para análise de séries temporais utilizando LSTM e técnicas estatísticas 
+                            avançadas. Aplicado para previsão de demanda e otimização de estoque.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">LSTM</span>
+                            <span class="tech-tag">Scikit-learn</span>
+                            <span class="tech-tag">Statsmodels</span>
+                            <span class="tech-tag">Plotly</span>
+                        </div>
+                        <div class="project-features">
+                            <h4>Principais Features:</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Previsão com múltiplos horizontes temporais</li>
+                                <li><i class="fas fa-check"></i> Análise de sazonalidade e tendências</li>
+                                <li><i class="fas fa-check"></i> Intervalos de confiança adaptativos</li>
+                                <li><i class="fas fa-check"></i> Dashboards interativos</li>
+                            </ul>
+                        </div>
+                        <div class="project-links-detailed">
+                            <a href="https://github.com/AnaJuvencio" target="_blank" class="btn btn-outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                            <a href="#" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> Ver Demo
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Projeto 5 -->
+                <article class="project-detailed" data-category="analytics">
+                    <div class="project-image-detailed">
+                        <img src="images/project5.jpg" alt="Dashboard Analytics">
+                    </div>
+                    <div class="project-content-detailed">
+                        <h3>Dashboard de Analytics Avançado</h3>
+                        <p class="project-description">
+                            Plataforma de visualização de dados com análises em tempo real. Integra múltiplas fontes 
+                            de dados e fornece insights acionáveis através de visualizações interativas.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Dash</span>
+                            <span class="tech-tag">Plotly</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                        <div class="project-features">
+                            <h4>Principais Features:</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Visualizações interativas e personalizáveis</li>
+                                <li><i class="fas fa-check"></i> Atualização de dados em tempo real</li>
+                                <li><i class="fas fa-check"></i> Exportação de relatórios automatizada</li>
+                                <li><i class="fas fa-check"></i> Sistema de alertas inteligentes</li>
+                            </ul>
+                        </div>
+                        <div class="project-links-detailed">
+                            <a href="https://github.com/AnaJuvencio" target="_blank" class="btn btn-outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                            <a href="#" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> Ver Demo
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Projeto 6 -->
+                <article class="project-detailed" data-category="ml">
+                    <div class="project-image-detailed">
+                        <img src="images/project6.jpg" alt="Classificação de Imagens">
+                    </div>
+                    <div class="project-content-detailed">
+                        <h3>Classificador de Imagens Médicas</h3>
+                        <p class="project-description">
+                            Modelo de deep learning para classificação de imagens médicas, auxiliando no diagnóstico 
+                            precoce de doenças. Utiliza transfer learning com arquiteturas estado-da-arte.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">ResNet</span>
+                            <span class="tech-tag">Keras</span>
+                            <span class="tech-tag">OpenCV</span>
+                            <span class="tech-tag">Streamlit</span>
+                        </div>
+                        <div class="project-features">
+                            <h4>Principais Features:</h4>
+                            <ul>
+                                <li><i class="fas fa-check"></i> Classificação multi-classe com 95% de acurácia</li>
+                                <li><i class="fas fa-check"></i> Técnicas de data augmentation</li>
+                                <li><i class="fas fa-check"></i> Interpretabilidade com Grad-CAM</li>
+                                <li><i class="fas fa-check"></i> Interface web intuitiva</li>
+                            </ul>
+                        </div>
+                        <div class="project-links-detailed">
+                            <a href="https://github.com/AnaJuvencio" target="_blank" class="btn btn-outline">
+                                <i class="fab fa-github"></i> Código
+                            </a>
+                            <a href="#" target="_blank" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> Ver Demo
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- GITHUB CTA -->
+    <section class="github-cta">
+        <div class="container">
+            <div class="cta-content">
+                <i class="fab fa-github"></i>
+                <h2>Mais projetos no GitHub</h2>
+                <p>Confira meu perfil para ver mais projetos e contribuições open source</p>
+                <a href="https://github.com/AnaJuvencio" target="_blank" class="btn btn-primary">
+                    Visitar GitHub <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Ana Beatriz</h3>
+                    <p>Especialista em Machine Learning e Inteligência Artificial</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="artigos.html">Artigos</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/AnaJuvencio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/seu-perfil" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:seu-email@exemplo.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ana Beatriz. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

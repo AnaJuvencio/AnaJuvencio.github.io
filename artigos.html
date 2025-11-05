@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Artigos e reflexões sobre Machine Learning e IA por Ana Beatriz">
+    <title>Artigos | Ana Beatriz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <a href="index.html" class="logo">
+                    <span class="logo-text">Ana Beatriz</span>
+                </a>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html" class="nav-link">Início</a></li>
+                    <li><a href="sobre.html" class="nav-link">Sobre</a></li>
+                    <li><a href="projetos.html" class="nav-link">Projetos</a></li>
+                    <li><a href="artigos.html" class="nav-link active">Artigos</a></li>
+                    <li><a href="contato.html" class="nav-link">Contato</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Artigos e Reflexões</h1>
+            <p class="page-subtitle">Pensamentos sobre tecnologia, IA e ciência de dados</p>
+        </div>
+    </section>
+
+    <!-- ARTICLES SECTION -->
+    <section class="articles-section">
+        <div class="container">
+            <div class="articles-grid">
+                <!-- Artigo 1 -->
+                <article class="article-card">
+                    <div class="article-image">
+                        <img src="images/article1.jpg" alt="O Futuro do Machine Learning">
+                        <span class="article-category">Machine Learning</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date"><i class="far fa-calendar"></i> 15 Out 2024</span>
+                            <span class="article-reading"><i class="far fa-clock"></i> 8 min</span>
+                        </div>
+                        <h3>O Futuro do Machine Learning na Indústria</h3>
+                        <p>
+                            Uma análise aprofundada sobre as tendências emergentes em ML e como elas estão 
+                            transformando diferentes setores da indústria. Exploramos desde AutoML até 
+                            explicabilidade de modelos.
+                        </p>
+                        <div class="article-tags">
+                            <span class="tag">ML</span>
+                            <span class="tag">Tendências</span>
+                            <span class="tag">Indústria</span>
+                        </div>
+                        <a href="#" class="article-link">
+                            Ler mais <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Artigo 2 -->
+                <article class="article-card">
+                    <div class="article-image">
+                        <img src="images/article2.jpg" alt="Ética em IA">
+                        <span class="article-category">Ética & IA</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date"><i class="far fa-calendar"></i> 02 Out 2024</span>
+                            <span class="article-reading"><i class="far fa-clock"></i> 10 min</span>
+                        </div>
+                        <h3>Ética e Responsabilidade na Inteligência Artificial</h3>
+                        <p>
+                            Discutindo os desafios éticos no desenvolvimento de sistemas de IA, incluindo viés 
+                            algorítmico, privacidade de dados e o papel da transparência em modelos de ML.
+                        </p>
+                        <div class="article-tags">
+                            <span class="tag">Ética</span>
+                            <span class="tag">IA</span>
+                            <span class="tag">Sociedade</span>
+                        </div>
+                        <a href="#" class="article-link">
+                            Ler mais <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Artigo 3 -->
+                <article class="article-card">
+                    <div class="article-image">
+                        <img src="images/article3.jpg" alt="Deep Learning">
+                        <span class="article-category">Deep Learning</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date"><i class="far fa-calendar"></i> 18 Set 2024</span>
+                            <span class="article-reading"><i class="far fa-clock"></i> 12 min</span>
+                        </div>
+                        <h3>Guia Prático para Deep Learning com PyTorch</h3>
+                        <p>
+                            Um tutorial hands-on sobre como construir e treinar redes neurais profundas usando 
+                            PyTorch, desde conceitos básicos até técnicas avançadas de otimização.
+                        </p>
+                        <div class="article-tags">
+                            <span class="tag">PyTorch</span>
+                            <span class="tag">Tutorial</span>
+                            <span class="tag">DL</span>
+                        </div>
+                        <a href="#" class="article-link">
+                            Ler mais <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Artigo 4 -->
+                <article class="article-card">
+                    <div class="article-image">
+                        <img src="images/article4.jpg" alt="NLP">
+                        <span class="article-category">NLP</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date"><i class="far fa-calendar"></i> 05 Set 2024</span>
+                            <span class="article-reading"><i class="far fa-clock"></i> 9 min</span>
+                        </div>
+                        <h3>Transformers e a Revolução do NLP</h3>
+                        <p>
+                            Explorando como a arquitetura Transformer mudou completamente o campo do Processamento 
+                            de Linguagem Natural, desde BERT até GPT e modelos mais recentes.
+                        </p>
+                        <div class="article-tags">
+                            <span class="tag">NLP</span>
+                            <span class="tag">Transformers</span>
+                            <span class="tag">BERT</span>
+                        </div>
+                        <a href="#" class="article-link">
+                            Ler mais <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Artigo 5 -->
+                <article class="article-card">
+                    <div class="article-image">
+                        <img src="images/article5.jpg" alt="Data Science">
+                        <span class="article-category">Data Science</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date"><i class="far fa-calendar"></i> 20 Ago 2024</span>
+                            <span class="article-reading"><i class="far fa-clock"></i> 7 min</span>
+                        </div>
+                        <h3>Melhores Práticas em Ciência de Dados</h3>
+                        <p>
+                            Compilação de boas práticas essenciais para cientistas de dados, incluindo versionamento 
+                            de código, documentação, testes e deployment de modelos em produção.
+                        </p>
+                        <div class="article-tags">
+                            <span class="tag">Best Practices</span>
+                            <span class="tag">MLOps</span>
+                            <span class="tag">Produção</span>
+                        </div>
+                        <a href="#" class="article-link">
+                            Ler mais <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Artigo 6 -->
+                <article class="article-card">
+                    <div class="article-image">
+                        <img src="images/article6.jpg" alt="Computer Vision">
+                        <span class="article-category">Computer Vision</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-date"><i class="far fa-calendar"></i> 08 Ago 2024</span>
+                            <span class="article-reading"><i class="far fa-clock"></i> 11 min</span>
+                        </div>
+                        <h3>Avanços Recentes em Visão Computacional</h3>
+                        <p>
+                            Uma visão geral dos desenvolvimentos mais recentes em computer vision, incluindo 
+                            detecção de objetos, segmentação semântica e geração de imagens.
+                        </p>
+                        <div class="article-tags">
+                            <span class="tag">CV</span>
+                            <span class="tag">CNN</span>
+                            <span class="tag">YOLO</span>
+                        </div>
+                        <a href="#" class="article-link">
+                            Ler mais <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER SECTION -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <h2>Receba novos artigos por email</h2>
+                    <p>Inscreva-se para receber notificações sobre novos artigos e conteúdos exclusivos</p>
+                </div>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Seu melhor email" required>
+                    <button type="submit" class="btn btn-primary">Inscrever</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Ana Beatriz</h3>
+                    <p>Especialista em Machine Learning e Inteligência Artificial</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                        <li><a href="projetos.html">Projetos</a></li>
+                        <li><a href="artigos.html">Artigos</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Redes Sociais</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/AnaJuvencio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/seu-perfil" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:seu-email@exemplo.com" aria-label="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Ana Beatriz. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
