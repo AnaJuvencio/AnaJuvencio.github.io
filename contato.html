@@ -10,29 +10,7 @@
 </head>
 <body>
     <!-- HEADER -->
-    <header class="header">
-        <nav class="navbar">
-            <div class="container">
-                <a href="index.html" class="logo">
-                    <span class="logo-text">Ana Beatriz</span>
-                </a>
-                
-                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="index.html" class="nav-link">Início</a></li>
-                    <!--<li><a href="sobre.html" class="nav-link">Sobre</a></li>
-                    <li><a href="projetos.html" class="nav-link">Projetos</a></li>
-                    <li><a href="artigos.html" class="nav-link">Artigos</a></li>-->
-                    <li><a href="contato.html" class="nav-link active">Contato</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <div id="header-placeholder"></div>
 
     <!-- PAGE HEADER -->
     <section class="page-header">
@@ -122,7 +100,13 @@
                 <!-- Contact Form -->
                 <div class="contact-form-section">
                     <h2>Envie uma Mensagem</h2>
-                    <form class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm" action="https://formsubmit.co/ana.juvencio01@gmail.com" method="POST">
+                        <!-- FormSubmit Configuration -->
+                        <input type="hidden" name="_subject" value="Nova mensagem do portfólio!">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="text" name="_honey" style="display:none">
+                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="name">Nome Completo</label>
@@ -145,18 +129,9 @@
                             <textarea id="message" name="message" rows="6" required></textarea>
                         </div>
 
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="consent" required>
-                                <span>Concordo com o armazenamento dos meus dados para resposta</span>
-                            </label>
-                        </div>
-
                         <button type="submit" class="btn btn-primary btn-submit">
                             Enviar Mensagem <i class="fas fa-paper-plane"></i>
                         </button>
-
-                        <div class="form-message" id="formMessage"></div>
                     </form>
                 </div>
             </div>
@@ -216,43 +191,7 @@
     </section>
 -->
     <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Ana Beatriz</h3>
-                    <p>Técnica em Desenvolvimento de Sistemas e graduanda em Ciência da Computação na UFSCar.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Links Rápidos</h4>
-                    <ul class="footer-links">
-                        <li><a href="index.html">Início</a></li>
-                        <!--<li><a href="sobre.html">Sobre</a></li>
-                        <li><a href="projetos.html">Projetos</a></li>
-                        <li><a href="artigos.html">Artigos</a></li>-->
-                        <li><a href="contato.html">Contato</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Redes Sociais</h4>
-                    <div class="social-links">
-                        <a href="https://github.com/AnaJuvencio" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/beatrizjuvencio" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="mailto:ana.juvencio01@gmail.com" aria-label="Email">
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Ana Beatriz. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="js/script.js"></script>
 </body>
