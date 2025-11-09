@@ -3,14 +3,17 @@
 // ===================================
 async function loadComponent(elementId, componentPath) {
     try {
-        // Usar caminho relativo que funciona tanto localmente quanto no GitHub Pages
-        const response = await fetch('/' + componentPath);
+        // Usar caminho relativo sem barra inicial para funcionar em mobile
+        const response = await fetch(componentPath);
         if (response.ok) {
             const html = await response.text();
             const element = document.getElementById(elementId);
             if (element) {
                 element.innerHTML = html;
+                console.log(`✅ ${componentPath} carregado`);
             }
+        } else {
+            console.error(`Erro ${response.status} ao carregar ${componentPath}`);
         }
     } catch (error) {
         console.error(`Erro ao carregar ${componentPath}:`, error);
