@@ -3,7 +3,12 @@
 // ===================================
 async function loadComponent(elementId, componentPath) {
     try {
-        const response = await fetch(componentPath);
+        // Obter o caminho base do site
+        const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? '' // Local: usar caminho relativo
+            : '/AnaJuvencio.github.io'; // GitHub Pages: usar caminho do repositório
+        
+        const response = await fetch(baseUrl + '/' + componentPath);
         if (response.ok) {
             const html = await response.text();
             const element = document.getElementById(elementId);
@@ -232,34 +237,7 @@ function initMobileMenu() {
     // ===================================
     // FORMULÁRIO DE CONTATO
     // ===================================
-    const contactForm = document.getElementById('contactForm');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formMessage = document.getElementById('formMessage');
-            const submitButton = contactForm.querySelector('.btn-submit');
-            
-            // Simular envio (em produção, você conectaria a um backend)
-            submitButton.disabled = true;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-            
-            setTimeout(() => {
-                formMessage.className = 'form-message success';
-                formMessage.textContent = 'Mensagem enviada com sucesso! Entrarei em contato em breve.';
-                
-                submitButton.disabled = false;
-                submitButton.innerHTML = 'Enviar Mensagem <i class="fas fa-paper-plane"></i>';
-                
-                contactForm.reset();
-                
-                setTimeout(() => {
-                    formMessage.style.display = 'none';
-                }, 5000);
-            }, 1500);
-        });
-    }
+    // Formulário agora usa FormSubmit - não precisa interceptar o submit
 
     // ===================================
     // NEWSLETTER FORM
