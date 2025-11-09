@@ -3,12 +3,8 @@
 // ===================================
 async function loadComponent(elementId, componentPath) {
     try {
-        // Obter o caminho base do site
-        const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-            ? '' // Local: usar caminho relativo
-            : '/AnaJuvencio.github.io'; // GitHub Pages: usar caminho do repositório
-        
-        const response = await fetch(baseUrl + '/' + componentPath);
+        // Usar caminho relativo que funciona tanto localmente quanto no GitHub Pages
+        const response = await fetch('/' + componentPath);
         if (response.ok) {
             const html = await response.text();
             const element = document.getElementById(elementId);
