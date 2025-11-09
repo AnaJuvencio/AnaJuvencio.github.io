@@ -105,6 +105,7 @@
                         <input type="hidden" name="_subject" value="Nova mensagem do portfólio!">
                         <input type="hidden" name="_captcha" value="false">
                         <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="_next" value="https://anajuvencio.github.io/contato.html?success=true">
                         <input type="text" name="_honey" style="display:none">
                         
                         <div class="form-row">
@@ -194,5 +195,14 @@
     <div id="footer-placeholder"></div>
 
     <script src="js/script.js"></script>
+    <script>
+        // Verificar se voltou com sucesso do FormSubmit
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+            alert('✅ Mensagem enviada com sucesso! Responderei em breve.');
+            // Limpar o parâmetro da URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
 </body>
 </html>
