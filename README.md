@@ -6,16 +6,7 @@ Portfólio profissional de Ana Beatriz.
 
 Este é um portfólio web moderno e responsivo desenvolvido para showcasing de projetos
 
-## ✨ Características
-
-- **Design Moderno**: Interface limpa e profissional com gradientes e animações suaves
-- **Totalmente Responsivo**: Funciona perfeitamente em desktop, tablet e mobile
-- **Performance Otimizada**: Carregamento rápido e animações fluidas
-- **SEO Friendly**: Meta tags otimizadas para mecanismos de busca
-- **Multipágina**: Organização clara com páginas dedicadas
-- **Interativo**: Efeitos de hover, animações e transições suaves
-
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 AnaJuvencio.github.io/
@@ -35,41 +26,6 @@ AnaJuvencio.github.io/
 │   └── article1-6.jpg  # Imagens dos artigos
 └── README.md           # Este arquivo
 ```
-
-## Páginas
-
-### 1. **Início (index.html)**
-- Hero section com foto e call-to-actions
-- Projetos em destaque
-- Footer com links sociais
-
-### 2. **Sobre (sobre.html)**
-- Biografia e trajetória profissional
-- Estatísticas (experiência, projetos, certificações)
-- Habilidades técnicas com barras de progresso
-- Timeline de experiência profissional
-- Certificações
-
-### 3. **Projetos (projetos.html)**
-- Filtros por categoria 
-- Cards detalhados de projetos com:
-  - Descrição completa
-  - Tecnologias utilizadas
-  - Features principais
-  - Links para código e demo
-
-### 4. **Artigos (artigos.html)**
-- Grid de artigos com imagens
-- Categorias e tags
-- Tempo de leitura
-- Newsletter para inscrição
-
-### 5. **Contato (contato.html)**
-- Informações de contato
-- Formulário funcional
-- Links para redes sociais
-- Disponibilidade para projetos
-- FAQ
 
 ## Como Usar
 
@@ -96,31 +52,6 @@ npx http-server
 
 4. Acesse `http://localhost:8000` no navegador
 
-## Deploy no GitHub Pages
-
-### Passo a Passo:
-
-1. **Commit e Push das alterações:**
-```bash
-git add .
-git commit -m "Portfólio completo - versão inicial"
-git push origin main
-```
-
-2. **Ativar GitHub Pages:**
-   - Acesse o repositório no GitHub
-   - Vá em **Settings** > **Pages**
-   - Em **Source**, selecione **main branch**
-   - Clique em **Save**
-
-3. **Aguarde o deploy:**
-   - O site será publicado em alguns minutos
-   - URL: `https://anajuvencio.github.io/`
-
-4. **Configure um domínio personalizado (opcional):**
-   - Em **Custom domain**, insira seu domínio
-   - Crie um arquivo `CNAME` na raiz com seu domínio
-
 ## 🛠️ Tecnologias Utilizadas
 
 - **HTML5** - Estrutura semântica
@@ -135,26 +66,6 @@ O site é totalmente responsivo com breakpoints em:
 - Desktop: > 992px
 - Tablet: 768px - 992px
 - Mobile: < 768px
-
-## Funcionalidades JavaScript
-
-- Menu mobile com hamburger
-- Animação de digitação (typing effect)
-- Scroll suave
-- Animações ao scrollar (Intersection Observer)
-- Filtros de projetos
-- Validação de formulários
-- Contador animado de estatísticas
-- Lazy loading de imagens
-
-## SEO
-
-- Meta tags otimizadas
-- Títulos descritivos
-- URLs amigáveis
-- Imagens com alt text
-- Sitemap.xml (adicionar)
-- Robots.txt (adicionar)
 
 ## Licença
 
