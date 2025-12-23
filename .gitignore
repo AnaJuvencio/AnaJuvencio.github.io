@@ -37,3 +37,7 @@ logs
 # Build e dist
 dist/
 build/
+ 
+# Arquivo de metadados do npm
+package.json
+package-lock.json
