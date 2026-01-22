@@ -2,36 +2,36 @@
    VARIAVEIS CSS
    =================================== */
 :root {
-    /* Cores Principais (paleta profissional com tom feminino) */
-    --primary-color: #8B5E83; /* mauve */
-    --primary-dark: #6F3F63;
-    --primary-light: #BFA0C0;
-    --secondary-color: #D18FA6; /* dusty rose */
-    --accent-color: #5AA29A; /* contraste suave */
-    --primary-rgb: 139,94,131;
-    --secondary-rgb: 209,143,166;
+    /* Cores Principais (paleta exata do currículo) */
+    --primary-color: #986025; /* bronze/dourado */
+    --primary-dark: #745245; /* marrom escuro */
+    --primary-light: #c29173; /* rosa/bronze claro */
+    --secondary-color: #c29173; /* rosa/bronze claro */
+    --accent-color: #986025; /* bronze/dourado */
+    --primary-rgb: 152,96,37;
+    --secondary-rgb: 194,145,115;
     
     /* Cores de Texto */
-    --text-primary: #1f2937;
-    --text-secondary: #6b7280;
-    --text-light: #9ca3af;
+    --text-primary: #000000;
+    --text-secondary: #745245;
+    --text-light: #986025;
     
     /* Cores de Fundo */
     --bg-primary: #ffffff;
-    --bg-secondary: #f9fafb;
-    --bg-dark: #111827;
+    --bg-secondary: #faf8f6;
+    --bg-dark: #745245;
     --bg-card: #ffffff;
     
     /* Gradientes */
-    --gradient-primary: linear-gradient(135deg, #8B5E83 0%, #D18FA6 100%);
-    --gradient-secondary: linear-gradient(135deg, #f2c6d8 0%, #d18fa6 100%);
-    --gradient-accent: linear-gradient(135deg, #5aa29a 0%, #3aa092 100%);
+    --gradient-primary: linear-gradient(135deg, #986025 0%, #c29173 100%);
+    --gradient-secondary: linear-gradient(135deg, #c29173 0%, #986025 100%);
+    --gradient-accent: linear-gradient(135deg, #745245 0%, #986025 100%);
     
     /* Sombras */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 1px 2px 0 rgba(116, 82, 69, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(116, 82, 69, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(116, 82, 69, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(116, 82, 69, 0.1);
     
     /* Transições */
     --transition-fast: 0.2s ease;
@@ -909,7 +909,7 @@ section {
    FOOTER
    =================================== */
 .footer {
-    background-color: var(--bg-dark);
+    background-color: #745245;
     color: white;
     padding: var(--spacing-xl) 0 var(--spacing-md);
 }
@@ -933,7 +933,7 @@ section {
 }
 
 .footer-section p {
-    color: var(--text-light);
+    color: rgba(255, 255, 255, 0.9);
     line-height: 1.6;
 }
 
@@ -944,7 +944,7 @@ section {
 }
 
 .footer-links a {
-    color: var(--text-light);
+    color: rgba(255, 255, 255, 0.9);
     transition: var(--transition-base);
 }
 
@@ -980,7 +980,7 @@ section {
     text-align: center;
     padding-top: var(--spacing-md);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-light);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* ===================================
