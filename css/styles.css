@@ -214,6 +214,27 @@ ul {
     box-shadow: var(--shadow-lg);
 }
 
+.nav-link.cv-link {
+    background: var(--gradient-primary);
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-link.cv-link:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.nav-link.cv-link i {
+    font-size: 1rem;
+}
+
 .menu-toggle {
     display: none;
     flex-direction: column;
