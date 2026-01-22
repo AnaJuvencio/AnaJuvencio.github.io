@@ -424,21 +424,342 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Aguardar um momento para o DOM atualizar
     setTimeout(() => {
         // Destacar página ativa no menu
-        highlightActivePage();
-        
+        try {
+            highlightActivePage();
+        } catch (e) {
+            console.warn('highlightActivePage failed:', e);
+        }
+
         // Inicializar menu mobile
-        initMobileMenu();
-        
-        // Inicializar outras funcionalidades
-        initScrollEffects();
-        initTypingAnimation();
-        initProjectFilters();
-        initContactForm();
-        initAnimations();
-        
+        try {
+            initMobileMenu();
+        } catch (e) {
+            console.warn('initMobileMenu failed:', e);
+        }
+
+        // Inicializar outras funcionalidades com proteção para evitar que uma falha pare o carregamento
+        const inits = [
+            'initScrollEffects',
+            'initTypingAnimation',
+            'initProjectFilters',
+            'initContactForm',
+            'initAnimations'
+        ];
+
+        inits.forEach(name => {
+            try {
+                const fn = window[name];
+                if (typeof fn === 'function') fn();
+                else console.debug(`${name} não definida — pulando.`);
+            } catch (err) {
+                console.warn(`${name} threw:`, err);
+            }
+        });
+
+        // Sempre tentar inicializar o carrossel (independente das outras funções)
+        try {
+            initCertCarousel();
+        } catch (e) {
+            console.error('initCertCarousel failed:', e);
+        }
+
         console.log('🚀 Portfólio Ana Beatriz - Carregado com sucesso!');
     }, 100);
 });
+
+// ===================================
+// CARROSSEL DE CERTIFICAÇÕES
+// ===================================
+function initCertCarousel() {
+    const viewport = document.querySelector('.cert-viewport');
+    const track = document.querySelector('.cert-track');
+    const prevBtn = document.querySelector('.cert-prev');
+    const nextBtn = document.querySelector('.cert-next');
+
+    console.debug('initCertCarousel: viewport', !!viewport, 'track', !!track, 'prevBtn', !!prevBtn, 'nextBtn', !!nextBtn);
+
+    if (!viewport || !track) {
+        console.warn('initCertCarousel: required elements not found, aborting.');
+        return;
+    }
+
+    const items = Array.from(track.children);
+    let currentIndex = 0;
+
+    function parseGapPx(el) {
+        const gap = getComputedStyle(el).gap || getComputedStyle(el).columnGap || '0px';
+        if (gap.endsWith('px')) return parseFloat(gap);
+        if (gap.endsWith('rem')) return parseFloat(gap) * parseFloat(getComputedStyle(document.documentElement).fontSize || '16');
+        return parseFloat(gap) || 0;
+    }
+
+    function getParams() {
+        const gapPx = parseGapPx(track);
+        const itemWidth = items[0].getBoundingClientRect().width + gapPx;
+        const viewportWidth = viewport.getBoundingClientRect().width;
+        const maxVisible = Math.max(1, Math.floor(viewportWidth / itemWidth));
+        const maxIndex = Math.max(0, items.length - maxVisible);
+        return { gapPx, itemWidth, viewportWidth, maxVisible, maxIndex };
+    }
+
+    function update() {
+        const { itemWidth, maxIndex } = getParams();
+
+        if (currentIndex < 0) currentIndex = 0;
+        if (currentIndex > maxIndex) currentIndex = maxIndex;
+
+        const offset = -(currentIndex * itemWidth);
+        track.style.transform = `translateX(${offset}px)`;
+
+        // atualizar estado dos botões (se existirem)
+        if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+        if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex;
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            // move by one item width backwards in px mode
+            try {
+                const { itemWidth } = getParams();
+                pxOffset -= itemWidth;
+                if (originalTrackWidth > 0) {
+                    while (pxOffset < 0) pxOffset += originalTrackWidth;
+                    pxOffset = pxOffset % originalTrackWidth;
+                    track.style.transform = `translateX(${-pxOffset}px)`;
+                }
+            } catch (e) {
+                // fallback to index mode
+                currentIndex -= 1;
+                update();
+            }
+            // pause autoplay briefly on manual interaction
+            pauseAutoplayTemporarily();
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            try {
+                const { itemWidth } = getParams();
+                pxOffset += itemWidth;
+                if (originalTrackWidth > 0) pxOffset = pxOffset % originalTrackWidth;
+                track.style.transform = `translateX(${-pxOffset}px)`;
+            } catch (e) {
+                currentIndex += 1;
+                update();
+            }
+            pauseAutoplayTemporarily();
+        });
+    }
+
+    // ===================================
+    // AUTOPLAY CONTÍNUO (PIXEL-BASED, INFINITO)
+    // ===================================
+    const carouselEl = document.querySelector('.cert-carousel');
+    let rafId = null;
+    let lastTime = null;
+    let pxOffset = 0;
+    let originalTrackWidth = 0;
+    let autoplaySpeed = 80; // pixels per second (aumentado)
+    let isPaused = false;
+
+    // duplicate items to allow seamless loop (duplicate only once)
+    function ensureDuplicate() {
+        if (track.dataset.duplicated === 'true') return;
+        const children = Array.from(track.children);
+        if (children.length === 0) return;
+        const originalCount = children.length;
+        // clone only the original set and append
+        const clones = children.slice(0, originalCount).map(node => node.cloneNode(true));
+        clones.forEach(c => c.removeAttribute && c.removeAttribute('id'));
+        clones.forEach(c => track.appendChild(c));
+        track.dataset.duplicated = 'true';
+    }
+
+    function recalcWidths() {
+        // originalTrackWidth should be width of the first set of items
+        const itemsNow = Array.from(track.children);
+        const half = Math.floor(itemsNow.length / 2) || itemsNow.length;
+        let width = 0;
+        const gapPx = parseGapPx(track);
+        for (let i = 0; i < half; i++) {
+            width += itemsNow[i].getBoundingClientRect().width + gapPx;
+        }
+        originalTrackWidth = width;
+    }
+
+    function step(now) {
+        if (lastTime == null) lastTime = now;
+        const dt = (now - lastTime) / 1000; // seconds
+        lastTime = now;
+        if (!isPaused) {
+            pxOffset += autoplaySpeed * dt;
+            if (originalTrackWidth > 0) {
+                // wrap (use modulo to keep value small)
+                pxOffset = pxOffset % originalTrackWidth;
+                // avoid tiny floating rounding jumping at exact boundary
+                if (Math.abs(pxOffset - originalTrackWidth) < 0.0001) pxOffset = 0;
+                track.style.transform = `translateX(${-pxOffset}px)`;
+            }
+        }
+        rafId = requestAnimationFrame(step);
+    }
+
+    // AUTOPLAY: prefer CSS animation for seamless loop, fallback to RAF step
+    let cssAnimStyleEl = null;
+    const cssAnimName = 'certScrollAnim';
+
+    function stopRaf() {
+        if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+            lastTime = null;
+        }
+    }
+
+    function startCssAnimation() {
+        stopRaf();
+        if (!originalTrackWidth || originalTrackWidth <= 0) return startRaf();
+        const duration = Math.max(4, originalTrackWidth / autoplaySpeed);
+        // remove previous style if exists
+        if (cssAnimStyleEl) cssAnimStyleEl.remove();
+        cssAnimStyleEl = document.createElement('style');
+        cssAnimStyleEl.textContent = `@keyframes ${cssAnimName} { 0% { transform: translateX(0); } 100% { transform: translateX(-${originalTrackWidth}px); } }`;
+        document.head.appendChild(cssAnimStyleEl);
+        track.style.animation = `${cssAnimName} ${duration}s linear infinite`;
+        track.style.willChange = 'transform';
+        if (carouselEl) carouselEl.classList.add('autoplay');
+    }
+
+    function stopCssAnimation() {
+        if (cssAnimStyleEl) {
+            cssAnimStyleEl.remove();
+            cssAnimStyleEl = null;
+        }
+        if (track) track.style.animation = '';
+        if (carouselEl) carouselEl.classList.remove('autoplay');
+    }
+
+    function startRaf() {
+        isPaused = false;
+        if (!rafId) {
+            lastTime = null;
+            rafId = requestAnimationFrame(step);
+            if (carouselEl) carouselEl.classList.add('autoplay');
+        }
+    }
+
+    function startAutoplay() {
+        // prefer CSS animation for smooth looping
+        if (originalTrackWidth > 0) startCssAnimation(); else startRaf();
+    }
+
+    function stopAutoplay() {
+        stopCssAnimation();
+        stopRaf();
+    }
+
+    function pauseAutoplayTemporarily() {
+        stopAutoplay();
+        setTimeout(() => startAutoplay(), 2000);
+    }
+
+    // interactions to pause/resume
+    viewport.addEventListener('mouseenter', () => {
+        // pause css animation or raf
+        if (track && track.style.animation) track.style.animationPlayState = 'paused';
+        isPaused = true;
+        stopRaf();
+    });
+    viewport.addEventListener('mouseleave', () => {
+        if (track && track.style.animation) track.style.animationPlayState = 'running';
+        isPaused = false;
+        // if css animation present, it will run; otherwise restart raf
+        if (!track.style.animation) startRaf();
+    });
+    viewport.addEventListener('pointerdown', () => {
+        if (track && track.style.animation) track.style.animationPlayState = 'paused';
+        isPaused = true;
+        stopRaf();
+    });
+    viewport.addEventListener('pointerup', () => { pauseAutoplayTemporarily(); });
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopAutoplay();
+        } else {
+            startAutoplay();
+        }
+    });
+
+    // Swipe support
+    let startX = 0;
+    let isDown = false;
+
+    viewport.addEventListener('pointerdown', (e) => {
+        isDown = true;
+        startX = e.clientX;
+    });
+
+    viewport.addEventListener('pointerup', (e) => {
+        if (!isDown) return;
+        const dx = e.clientX - startX;
+        if (dx > 30) currentIndex -= 1;
+        if (dx < -30) currentIndex += 1;
+        update();
+        isDown = false;
+    });
+
+    window.addEventListener('resize', update);
+    // Aguarda imagens do track carregarem antes de calcular tamanhos e iniciar autoplay
+    const imgs = Array.from(track.querySelectorAll('img'));
+
+    function imagesLoaded(elements) {
+        return new Promise(resolve => {
+            if (elements.length === 0) return resolve();
+            let remaining = elements.length;
+            elements.forEach(img => {
+                if (img.complete && img.naturalWidth > 0) {
+                    remaining -= 1;
+                    if (remaining === 0) resolve();
+                } else {
+                    img.addEventListener('load', () => {
+                        remaining -= 1;
+                        if (remaining === 0) resolve();
+                    }, { once: true });
+                    img.addEventListener('error', () => {
+                        remaining -= 1;
+                        if (remaining === 0) resolve();
+                    }, { once: true });
+                }
+            });
+        });
+    }
+
+    imagesLoaded(imgs).then(() => {
+        // inicializar estado e autoplay após imagens prontas
+        update();
+        try {
+            ensureDuplicate();
+            recalcWidths();
+        } catch (e) {
+            console.warn('carousel duplication/recalc failed:', e);
+        }
+        startAutoplay();
+    }).catch(() => {
+        // fallback: mesmo que alguma imagem falhe, inicializa após curto delay
+        setTimeout(() => {
+            update();
+            try {
+                ensureDuplicate();
+                recalcWidths();
+            } catch (e) {
+                console.warn('carousel duplication/recalc failed (fallback):', e);
+            }
+            startAutoplay();
+        }, 300);
+    });
+}
 
 // ===================================
 // PREVENIR SCROLL HORIZONTAL

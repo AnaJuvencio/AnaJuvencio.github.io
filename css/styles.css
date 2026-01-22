@@ -199,6 +199,21 @@ ul {
     background-color: rgba(var(--primary-rgb), 0.08);
 }
 
+/* Destaque para link do GitHub no header */
+.nav-link.github {
+    background: var(--gradient-primary);
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    font-weight: 600;
+}
+
+.nav-link.github:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -398,6 +413,91 @@ ul {
 /* ===================================
    SECTIONS
    =================================== */
+
+/* ===================================
+   CARROSSEL DE CERTIFICAÇÕES
+   =================================== */
+.cert-section {
+    padding: var(--spacing-xl) 0; /* mais espaço acima/abaixo */
+}
+
+.cert-carousel {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.cert-viewport {
+    overflow: hidden;
+    flex: 1 1 auto;
+}
+
+.cert-track {
+    display: flex;
+    gap: 1rem;
+    transition: transform 0.4s ease;
+    will-change: transform;
+    padding: 0.25rem 0;
+}
+
+.cert-item {
+    flex: 0 0 160px; /* tamanho aumentado para logos */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cert-item a {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.cert-item img {
+    max-height: 110px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(20%);
+    transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.cert-item img:hover {
+    transform: translateY(-4px) scale(1.02);
+    filter: grayscale(0%);
+}
+
+.cert-btn {
+    background: transparent;
+    border: 2px solid rgba(var(--primary-rgb), 0.08);
+    color: var(--primary-color);
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cert-btn:hover {
+    background: rgba(var(--primary-rgb), 0.06);
+}
+
+.cert-btn:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+/* Quando autoplay está ativo, esconder os botões para exibição contínua */
+.cert-carousel.autoplay .cert-btn {
+    display: none;
+}
+
+.cert-note {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    text-align: center;
+}
 section {
     padding: var(--spacing-xl) 0;
 }
