@@ -630,6 +630,10 @@ section {
     opacity: 1;
 }
 
+/* prevent invisible overlay from blocking pointer events on touch; enable on hover for desktop */
+.project-overlay { pointer-events: none; }
+.project-card:hover .project-overlay { pointer-events: auto; }
+
 .project-link {
     color: white;
     font-weight: 600;
@@ -671,6 +675,213 @@ section {
     border-radius: var(--radius-sm);
     font-size: 0.875rem;
     font-weight: 500;
+}
+
+/* Projects carousel overrides: keep proportions and show ~3 cards */
+.featured-projects {
+    position: relative;
+}
+
+.projects-viewport {
+    /* permitir que sombras e cantos arredondados fiquem visíveis */
+    overflow: visible;
+    width: 100%;
+    padding-inline: var(--spacing-md);
+}
+
+.projects-track {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: stretch;
+    padding-right: var(--spacing-md);
+}
+
+/* Each card: roughly 1/3 of viewport on desktop, preserve proportions, set sensible min-width */
+.projects-track .project-card {
+    flex: 0 0 calc((100% - (2 * var(--spacing-lg))) / 3);
+    display: flex;
+    flex-direction: column;
+    min-width: 230px;
+    max-width: 420px;
+    overflow: visible; /* permitir que a sombra dos cards não seja cortada pelo viewport */
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+}
+
+/* garantir que a seção proteja o conteúdo e evite scroll horizontal inesperado */
+.featured-projects {
+    /* permitir que sombras/bordas dos cards fiquem visíveis */
+    overflow: visible;
+    padding-bottom: var(--spacing-lg);
+}
+
+.projects-viewport {
+    /* espaço extra abaixo para sombras não serem cortadas */
+    padding-bottom: calc(var(--spacing-sm));
+}
+
+/* Ajuste proporcional: reduzir altura dos cards para melhor encaixe */
+.projects-track .project-image {
+    height: 230px; /* reduzido de 320px */
+    flex: 0 0 auto;
+    overflow: hidden; /* clip apenas dentro da área da imagem para manter cantos arredondados */
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+}
+
+/* Ensure images fill the image box and are cropped consistently */
+.projects-track .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.projects-track .project-info {
+    flex: 1 1 auto;
+}
+
+/* Navigation buttons */
+.proj-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 999px;
+    padding: 8px 10px;
+    cursor: pointer;
+    z-index: 30;
+    box-shadow: var(--shadow-sm);
+}
+.proj-prev { left: 8px; }
+.proj-next { right: 8px; }
+
+/* Responsive: 2 cards on medium screens, 1 on small */
+@media (max-width: 900px) {
+    /* Tablet: two cards visible, enable horizontal swipe and snap */
+    .projects-viewport {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        padding-inline: calc(var(--spacing-sm));
+    }
+    .projects-track {
+        gap: calc(var(--spacing-md) / 1.5);
+    }
+    .projects-track .project-card {
+        flex: 0 0 calc((100% - var(--spacing-lg)) / 2);
+        max-width: none;
+        box-sizing: border-box;
+        scroll-snap-align: center;
+        margin-bottom: var(--spacing-md);
+    }
+    .projects-track .project-image { height: 200px; }
+    .projects-track .project-info { padding: var(--spacing-sm); }
+}
+
+@media (max-width: 600px) {
+    /* Mobile: 1 card por vez, centralizado */
+    .projects-viewport {
+        overflow: hidden;
+        width: 100%;
+        padding: 0;
+    }
+    
+    .projects-track {
+        gap: var(--spacing-xl);
+        padding: 0;
+        align-items: center;
+    }
+    
+    .projects-track .project-card {
+        flex: 0 0 85%;
+        min-width: 85%;
+        max-width: 85%;
+        margin: 0;
+    }
+    
+    .projects-track .project-image { 
+        height: 200px !important; 
+    }
+    
+    .projects-track .project-image img { 
+        object-fit: cover; 
+        height: 100%; 
+        width: 100%; 
+    }
+    
+    .projects-track .project-info { 
+        padding: var(--spacing-sm); 
+    }
+    
+    /* Botões de navegação no mobile */
+    .proj-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        font-size: 1.2rem;
+        background: rgba(255,255,255,0.95);
+        border: 1px solid rgba(0,0,0,0.1);
+        box-shadow: var(--shadow-md);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 60;
+        border-radius: 50%;
+    }
+    .proj-prev { left: 10px; }
+    .proj-next { right: 10px; }
+}
+
+/* Celulares estreitos */
+@media (max-width: 420px) {
+    .projects-track .project-card {
+        flex: 0 0 90%;
+        min-width: 90%;
+        max-width: 90%;
+    }
+    
+    .projects-track .project-image { 
+        height: 180px !important; 
+    }
+}
+
+/* Mobile specific: ensure overlay doesn't block interactive elements and info is on top */
+@media (max-width: 600px) {
+    .project-overlay { z-index: 0; }
+    .project-info { position: relative; z-index: 2; }
+    .mobile-project-link { position: relative; z-index: 3; display: inline-block; }
+}
+
+/* touch and mobile link style */
+.projects-viewport {
+    touch-action: pan-x;
+}
+
+.mobile-project-link {
+    display: inline-block;
+    margin-top: 0.75rem;
+    color: white;
+    background: rgba(139,94,131,0.9);
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+}
+@media (max-width: 600px) {
+    .mobile-project-link { 
+        color: var(--primary-color); 
+        background: #fff; 
+        border: 2px solid rgba(139,94,131,0.18);
+        display: block;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        width: fit-content;
+    }
 }
 
 /* ===================================

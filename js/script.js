@@ -462,14 +462,259 @@ document.addEventListener('DOMContentLoaded', async function() {
         } catch (e) {
             console.error('initCertCarousel failed:', e);
         }
+        try {
+            initProjectsCarousel();
+        } catch (e) {
+            console.error('initProjectsCarousel failed:', e);
+        }
 
-        console.log('🚀 Portfólio Ana Beatriz - Carregado com sucesso!');
+        console.log('Portfólio Ana Beatriz - Carregado com sucesso!');
     }, 100);
 });
 
 // ===================================
 // CARROSSEL DE CERTIFICAÇÕES
 // ===================================
+// (inserido) função para transformar a grade de projetos em um carrossel
+function initProjectsCarousel() {
+    const grid = document.querySelector('.featured-projects .projects-grid');
+    if (!grid) return;
+
+    // criar viewport e track
+    const viewport = document.createElement('div');
+    viewport.className = 'projects-viewport';
+    viewport.style.overflow = 'hidden';
+    viewport.style.width = '100%';
+
+    const track = document.createElement('div');
+    track.className = 'projects-track';
+    track.style.display = 'flex';
+    track.style.transition = 'transform 400ms ease';
+    track.style.willChange = 'transform';
+
+    // tentar preservar gap do grid (css) quando possível
+    function parseGapPx(el) {
+        const gap = getComputedStyle(el).gap || getComputedStyle(el).columnGap || '0px';
+        if (gap.endsWith('px')) return parseFloat(gap);
+        if (gap.endsWith('rem')) return parseFloat(gap) * parseFloat(getComputedStyle(document.documentElement).fontSize || '16');
+        return parseFloat(gap) || 0;
+    }
+
+    const gappx = parseGapPx(grid);
+    if (gappx) track.style.gap = gappx + 'px';
+
+    // mover cards para o track
+    const cards = Array.from(grid.querySelectorAll('.project-card'));
+    if (cards.length === 0) return;
+    
+    cards.forEach(card => {
+        card.style.flex = '0 0 auto';
+        card.style.minWidth = '0';
+        track.appendChild(card);
+    });
+
+    // substituir grid por viewport
+    grid.replaceWith(viewport);
+    viewport.appendChild(track);
+
+    // criar botões prev/next
+    const prevBtn = document.createElement('button');
+    prevBtn.setAttribute('type', 'button');
+    prevBtn.className = 'proj-btn proj-prev';
+    prevBtn.setAttribute('aria-label', 'Anterior');
+    prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+
+    const nextBtn = document.createElement('button');
+    nextBtn.setAttribute('type', 'button');
+    nextBtn.className = 'proj-btn proj-next';
+    nextBtn.setAttribute('aria-label', 'Próximo');
+    nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+
+    // inserir botões antes/depois do viewport
+    const sectionContainer = viewport.parentElement || document.querySelector('.featured-projects .container');
+    if (sectionContainer) {
+        sectionContainer.insertBefore(prevBtn, viewport);
+        if (viewport.nextSibling) sectionContainer.insertBefore(nextBtn, viewport.nextSibling);
+        else sectionContainer.appendChild(nextBtn);
+    }
+
+    // estilo básico dos botões (inline para não depender do css existente)
+    [prevBtn, nextBtn].forEach(btn => {
+        btn.style.border = 'none';
+        btn.style.background = 'transparent';
+        btn.style.cursor = 'pointer';
+        btn.style.fontSize = '1.2rem';
+        btn.style.padding = '8px 10px';
+        btn.style.margin = '8px';
+        btn.style.color = 'inherit';
+    });
+
+    // lógica do carrossel
+    let currentIndex = 0;
+
+    function getParams() {
+        const viewportWidth = viewport.getBoundingClientRect().width;
+        const gapPx = parseGapPx(track);
+        
+        let itemWidth;
+        
+        if (window.innerWidth <= 600) {
+            // Mobile: pegar a largura real do card + gap
+            const card = cards[0];
+            if (card) {
+                const cardWidth = card.getBoundingClientRect().width;
+                itemWidth = cardWidth + gapPx;
+            } else {
+                itemWidth = viewportWidth;
+            }
+        } else if (window.innerWidth <= 900) {
+            // Tablet: 2 cards por vez
+            const cardRect = cards[0].getBoundingClientRect();
+            itemWidth = cardRect.width + gapPx;
+        } else {
+            // Desktop: 3 cards por vez
+            const cardRect = cards[0].getBoundingClientRect();
+            itemWidth = cardRect.width + gapPx;
+        }
+        
+        const maxVisible = Math.max(1, Math.floor(viewportWidth / itemWidth));
+        const maxIndex = Math.max(0, cards.length - maxVisible);
+        return { itemWidth, viewportWidth, maxVisible, maxIndex };
+    }
+
+    function update() {
+        const { itemWidth } = getParams();
+        
+        // Loop infinito
+        if (currentIndex < 0) currentIndex = cards.length - 1;
+        if (currentIndex >= cards.length) currentIndex = 0;
+        
+        // Calcular offset para centralizar no mobile
+        let offset;
+        if (window.innerWidth <= 600) {
+            // Mobile: centralizar o card atual
+            const viewportWidth = viewport.getBoundingClientRect().width;
+            const cardWidth = cards[0].getBoundingClientRect().width;
+            const centerOffset = (viewportWidth - cardWidth) / 2;
+            offset = -(currentIndex * itemWidth) + centerOffset;
+        } else {
+            offset = -(currentIndex * itemWidth);
+        }
+        
+        track.style.transform = `translateX(${offset}px)`;
+        
+        // Nunca desabilitar botões (loop infinito)
+        prevBtn.disabled = false;
+        nextBtn.disabled = false;
+    }
+
+    prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentIndex -= 1;
+        update();
+    });
+
+    nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        currentIndex += 1;
+        update();
+    });
+
+    // suporte ao arraste / swipe
+    let startX = 0;
+    let isDown = false;
+
+    viewport.addEventListener('pointerdown', (e) => {
+        isDown = true;
+        startX = e.clientX;
+        viewport.setPointerCapture && viewport.setPointerCapture(e.pointerId);
+    });
+    viewport.addEventListener('pointerup', (e) => {
+        if (!isDown) return;
+        const dx = e.clientX - startX;
+        if (dx > 30) currentIndex -= 1;
+        if (dx < -30) currentIndex += 1;
+        update();
+        isDown = false;
+    });
+
+    window.addEventListener('resize', () => {
+        // Garantir que o índice é válido
+        if (currentIndex >= cards.length) currentIndex = cards.length - 1;
+        if (currentIndex < 0) currentIndex = 0;
+        update();
+    });
+
+    // aguardar imagens carregarem para calcular tamanhos
+    const imgs = Array.from(track.querySelectorAll('img'));
+    function imagesLoaded(elements) {
+        return new Promise(resolve => {
+            if (elements.length === 0) return resolve();
+            let remaining = elements.length;
+            elements.forEach(img => {
+                if (img.complete && img.naturalWidth > 0) {
+                    remaining -= 1;
+                    if (remaining === 0) resolve();
+                } else {
+                    img.addEventListener('load', () => {
+                        remaining -= 1;
+                        if (remaining === 0) resolve();
+                    }, { once: true });
+                    img.addEventListener('error', () => {
+                        remaining -= 1;
+                        if (remaining === 0) resolve();
+                    }, { once: true });
+                }
+            });
+        });
+    }
+
+    imagesLoaded(imgs).then(() => {
+        update();
+        try { addMobileLinks(); } catch (e) { /* ignore if fn not available yet */ }
+    }).catch(() => setTimeout(update, 150));
+}
+// adiciona link visível dentro do card em telas móveis para permitir toque
+function addMobileLinks() {
+    const viewport = document.querySelector('.projects-viewport');
+    if (!viewport) return;
+    const isMobile = window.innerWidth <= 600;
+    const cards = Array.from(viewport.querySelectorAll('.project-card'));
+
+    cards.forEach(card => {
+        const info = card.querySelector('.project-info');
+        const overlayLink = card.querySelector('.project-overlay .project-link');
+        if (!info || !overlayLink) return;
+
+        let existing = info.querySelector('.mobile-project-link');
+        if (isMobile) {
+            if (!existing) {
+                const clone = overlayLink.cloneNode(true);
+                clone.classList.add('mobile-project-link');
+                // ensure accessibility
+                clone.setAttribute('aria-label', 'Ver detalhes do projeto');
+                // stop propagation so clicks don't interfere with swipe
+                clone.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // try to open the link; prefer same behavior as original
+                    const href = this.getAttribute('href');
+                    const target = this.getAttribute('target');
+                    if (href) {
+                        if (target === '_blank') window.open(href, '_blank');
+                        else window.location.href = href;
+                    }
+                });
+                info.appendChild(clone);
+            }
+        } else {
+            if (existing) existing.remove();
+        }
+    });
+}
+
+window.addEventListener('resize', () => {
+    try { addMobileLinks(); } catch (e) {}
+});
 function initCertCarousel() {
     const viewport = document.querySelector('.cert-viewport');
     const track = document.querySelector('.cert-track');
@@ -764,6 +1009,16 @@ function initCertCarousel() {
 // ===================================
 // PREVENIR SCROLL HORIZONTAL
 // ===================================
+// Evita scroll horizontal apenas em telas grandes; permite overflow em mobile/tablet
 document.addEventListener('DOMContentLoaded', function() {
-    document.body.style.overflowX = 'hidden';
+    try {
+        if (window.innerWidth && window.innerWidth > 900) {
+            document.body.style.overflowX = 'hidden';
+        } else {
+            // garantir comportamento natural em dispositivos touch
+            document.body.style.overflowX = '';
+        }
+    } catch (e) {
+        console.warn('Could not set body overflowX:', e);
+    }
 });
