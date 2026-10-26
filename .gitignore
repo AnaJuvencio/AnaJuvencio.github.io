@@ -34,6 +34,11 @@ logs
 .env.local
 .env.*.local
 
+# PDI: fonte em texto aberto e manuscrito nunca vão para o repositório
+# (somente a versão criptografada, pdi.html, é publicada)
+*.fonte.html
+PDI.pdf
+
 # Build e dist
 dist/
 build/

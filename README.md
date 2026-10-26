@@ -27,6 +27,19 @@ AnaJuvencio.github.io/
 └── README.md           # Este arquivo
 ```
 
+## PDI protegido por senha
+
+A página `pdi.html` (endereço: `https://anajuvencio.github.io/pdi`) é publicada **criptografada**: quem abre o link vê só uma tela de senha, e o conteúdo é descriptografado no navegador. A senha não fica guardada em nenhum arquivo do repositório.
+
+- O texto aberto fica em `pdi.fonte.html` (ignorado pelo git, nunca é publicado).
+- Para gerar ou atualizar a versão publicada, edite a fonte e rode:
+
+```bash
+node scripts/proteger-pdi.js
+```
+
+O script pede a senha (mínimo de 10 caracteres; prefira uma frase longa) e cria `pdi.html`. Publique esse arquivo junto com `css/pdi.css` e `js/pdi.js`.
+
 ## Como Usar
 
 ### Instalação Local
