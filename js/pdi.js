@@ -81,7 +81,301 @@
         $$('main section[id]').forEach(function (section) { spy.observe(section); });
     }
 
-    // Abas acessíveis (trajetória, metas, MBTI)
+    // Foto ampliada: abre ao clicar numa foto do mosaico e volta para a miniatura ao fechar
+    const lightbox = (function () {
+        const root = document.createElement('div');
+        root.className = 'pdi-lightbox';
+        root.hidden = true;
+        root.setAttribute('role', 'dialog');
+        root.setAttribute('aria-modal', 'true');
+        root.setAttribute('aria-label', 'Foto ampliada');
+        root.innerHTML =
+            '<button class="pdi-lb-close" type="button" aria-label="Fechar foto"><i class="fas fa-xmark" aria-hidden="true"></i></button>' +
+            '<button class="pdi-lb-nav pdi-lb-prev" type="button" aria-label="Foto anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>' +
+            '<button class="pdi-lb-nav pdi-lb-next" type="button" aria-label="Próxima foto"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>' +
+            '<figure class="pdi-lb-figure"><div class="pdi-lb-frame"><img alt="" draggable="false"></div><figcaption></figcaption></figure>';
+        document.body.appendChild(root);
+
+        const frame = $('.pdi-lb-frame', root);
+        const img = $('img', root);
+        const caption = $('figcaption', root);
+        const closeButton = $('.pdi-lb-close', root);
+        const prevButton = $('.pdi-lb-prev', root);
+        const nextButton = $('.pdi-lb-next', root);
+        let group = [];
+        let index = 0;
+        let opener = null;
+        let hideTimer = null;
+
+        // Anima a moldura entre a posição da miniatura e a posição ampliada
+        function transformFrom(tile) {
+            const from = tile.getBoundingClientRect();
+            const to = frame.getBoundingClientRect();
+            if (!to.width) return '';
+            const dx = from.left + from.width / 2 - (to.left + to.width / 2);
+            const dy = from.top + from.height / 2 - (to.top + to.height / 2);
+            return 'translate(' + dx + 'px, ' + dy + 'px) scale(' + from.width / to.width + ')';
+        }
+
+        function show(i, animateFrom) {
+            index = (i + group.length) % group.length;
+            const source = $('img', group[index]);
+            const url = source.currentSrc || source.src;
+            img.src = url;
+            img.alt = source.alt;
+            frame.style.setProperty('--lb-bg', 'url("' + url + '")');
+            caption.textContent = source.alt + (group.length > 1 ? ' · ' + (index + 1) + ' de ' + group.length : '');
+            prevButton.hidden = nextButton.hidden = group.length < 2;
+            if (animateFrom && !reduceMotion) {
+                frame.style.transition = 'none';
+                frame.style.transform = transformFrom(animateFrom);
+                frame.getBoundingClientRect();
+                frame.style.transition = '';
+                frame.style.transform = '';
+            }
+        }
+
+        function open(tiles, i) {
+            clearTimeout(hideTimer);
+            group = tiles;
+            opener = tiles[i];
+            root.hidden = false;
+            document.documentElement.classList.add('pdi-lb-open');
+            show(i, opener);
+            root.getBoundingClientRect();
+            root.classList.add('is-open');
+            closeButton.focus();
+        }
+
+        function close() {
+            if (root.hidden) return;
+            const tile = group[index];
+            root.classList.remove('is-open');
+            if (!reduceMotion) frame.style.transform = transformFrom(tile);
+            hideTimer = setTimeout(function () {
+                root.hidden = true;
+                frame.style.transform = '';
+                document.documentElement.classList.remove('pdi-lb-open');
+            }, reduceMotion ? 0 : 350);
+            if (opener) tile.focus({ preventScroll: true });
+        }
+
+        closeButton.addEventListener('click', close);
+        prevButton.addEventListener('click', function () { show(index - 1); });
+        nextButton.addEventListener('click', function () { show(index + 1); });
+        root.addEventListener('click', function (event) {
+            if (event.target === root || event.target === $('.pdi-lb-figure', root)) close();
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (root.hidden) return;
+            if (event.key === 'Escape') close();
+            else if (event.key === 'ArrowLeft' && group.length > 1) show(index - 1);
+            else if (event.key === 'ArrowRight' && group.length > 1) show(index + 1);
+            else if (event.key === 'Tab') {
+                const focusable = [closeButton, prevButton, nextButton].filter(function (el) { return !el.hidden; });
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            }
+        });
+
+        // Deslizar o dedo para o lado troca de foto
+        let touchX = null;
+        root.addEventListener('touchstart', function (event) { touchX = event.touches[0].clientX; }, { passive: true });
+        root.addEventListener('touchend', function (event) {
+            if (touchX === null || group.length < 2) return;
+            const delta = event.changedTouches[0].clientX - touchX;
+            touchX = null;
+            if (Math.abs(delta) > 50) show(index + (delta < 0 ? 1 : -1));
+        }, { passive: true });
+
+        return { open: open };
+    })();
+
+    // Linha do tempo da trajetória: arrastar/deslizar, setas e destaque da etapa em foco
+    $$('[data-timeline]').forEach(function (root) {
+        const viewport = $('.pdi-tl-viewport', root);
+        const track = $('.pdi-tl-track', root);
+        const items = $$('.pdi-tl-item', root);
+        const prev = $('[data-dir="-1"]', root);
+        const next = $('[data-dir="1"]', root);
+        const bar = $('.pdi-tl-bar span', root);
+        const count = $('.pdi-tl-count', root);
+        const behavior = reduceMotion ? 'auto' : 'smooth';
+        let active = -1;
+        let ticking = false;
+
+        function centerOf(item) { return item.offsetLeft + item.offsetWidth / 2; }
+
+        // Ramificações: cada botão mostra a face do cartão com o mesmo data-face
+        const branches = items.map(function (item, n) {
+            const chips = $$('.pdi-tl-chip', item);
+            const faces = $$('.pdi-tl-face', item);
+            chips.forEach(function (chip, c) {
+                const face = faces.find(function (f) { return f.dataset.face === chip.dataset.face; });
+                chip.id = 'tl-chip-' + n + '-' + c;
+                chip.setAttribute('role', 'tab');
+                if (face) {
+                    face.id = 'tl-face-' + n + '-' + c;
+                    face.setAttribute('role', 'tabpanel');
+                    face.setAttribute('aria-labelledby', chip.id);
+                    chip.setAttribute('aria-controls', face.id);
+                }
+            });
+
+            function show(name) {
+                chips.forEach(function (chip) {
+                    const on = chip.dataset.face === name;
+                    chip.setAttribute('aria-selected', String(on));
+                    chip.tabIndex = on ? 0 : -1;
+                });
+                faces.forEach(function (face) {
+                    const on = face.dataset.face === name;
+                    face.classList.toggle('is-on', on);
+                    face.inert = !on;
+                });
+            }
+
+            chips.forEach(function (chip, c) {
+                chip.addEventListener('click', function () { touched(); show(chip.dataset.face); });
+                chip.addEventListener('keydown', function (event) {
+                    let to = null;
+                    if (event.key === 'ArrowRight') to = (c + 1) % chips.length;
+                    else if (event.key === 'ArrowLeft') to = (c - 1 + chips.length) % chips.length;
+                    if (to === null) return;
+                    event.preventDefault();
+                    chips[to].focus();
+                    show(chips[to].dataset.face);
+                });
+            });
+
+            show('main');
+            return show;
+        });
+
+        function goTo(index) {
+            const item = items[Math.max(0, Math.min(items.length - 1, index))];
+            viewport.scrollTo({ left: centerOf(item) - viewport.clientWidth / 2, behavior: behavior });
+        }
+
+        function update() {
+            ticking = false;
+            const middle = viewport.scrollLeft + viewport.clientWidth / 2;
+            let nearest = 0;
+            items.forEach(function (item, i) {
+                if (Math.abs(centerOf(item) - middle) < Math.abs(centerOf(items[nearest]) - middle)) nearest = i;
+            });
+            if (nearest === active) return;
+            if (active !== -1) branches[active]('main');
+            active = nearest;
+            items.forEach(function (item, i) {
+                item.classList.toggle('is-active', i === active);
+                if (i === active) item.setAttribute('aria-current', 'step');
+                else item.removeAttribute('aria-current');
+            });
+            track.style.setProperty('--tl-fill', centerOf(items[active]) + 'px');
+            root.style.setProperty('--tl-progress', String((active + 1) / items.length));
+            count.textContent = 'Etapa ' + (active + 1) + ' de ' + items.length;
+            prev.disabled = active === 0;
+            next.disabled = active === items.length - 1;
+        }
+
+        function touched() { root.classList.add('is-touched'); }
+
+        viewport.addEventListener('scroll', function () {
+            if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(update);
+            }
+        }, { passive: true });
+
+        prev.addEventListener('click', function () { touched(); goTo(active - 1); });
+        next.addEventListener('click', function () { touched(); goTo(active + 1); });
+
+        items.forEach(function (item, i) {
+            item.addEventListener('click', function () {
+                if (!dragged && i !== active) { touched(); goTo(i); }
+            });
+        });
+
+        viewport.addEventListener('keydown', function (event) {
+            if (event.target !== viewport) return;
+            const keys = { ArrowRight: active + 1, ArrowLeft: active - 1, Home: 0, End: items.length - 1 };
+            if (!(event.key in keys)) return;
+            event.preventDefault();
+            touched();
+            goTo(keys[event.key]);
+        });
+
+        // Toque já rola nativamente; para o mouse, arrastar com o botão pressionado
+        let dragging = false;
+        let dragged = false;
+        let startX = 0;
+        let startScroll = 0;
+
+        viewport.addEventListener('pointerdown', function (event) {
+            if (event.pointerType !== 'mouse' || event.button !== 0) return;
+            dragging = true;
+            dragged = false;
+            startX = event.clientX;
+            startScroll = viewport.scrollLeft;
+        });
+
+        window.addEventListener('pointermove', function (event) {
+            if (!dragging) return;
+            const delta = event.clientX - startX;
+            if (!dragged && Math.abs(delta) > 5) {
+                dragged = true;
+                touched();
+                viewport.classList.add('is-dragging');
+            }
+            if (dragged) viewport.scrollLeft = startScroll - delta;
+        });
+
+        function release() {
+            if (!dragging) return;
+            dragging = false;
+            if (!dragged) return;
+            viewport.classList.remove('is-dragging');
+            update();
+            goTo(active);
+            setTimeout(function () { dragged = false; }, 0);
+        }
+        window.addEventListener('pointerup', release);
+        window.addEventListener('pointercancel', release);
+
+        viewport.addEventListener('touchstart', touched, { passive: true });
+        viewport.addEventListener('wheel', touched, { passive: true });
+        window.addEventListener('resize', function () { active = -1; update(); goTo(Math.max(active, 0)); });
+        window.addEventListener('load', function () { viewport.scrollTo({ left: centerOf(items[0]) - viewport.clientWidth / 2 }); update(); });
+
+        // Fotos do mosaico: só a etapa em foco abre a foto ampliada
+        items.forEach(function (item, n) {
+            const tiles = $$('.pdi-tl-tile:not(.pdi-tl-tile-empty)', item);
+            tiles.forEach(function (tile, t) {
+                tile.tabIndex = 0;
+                tile.setAttribute('role', 'button');
+                tile.setAttribute('aria-label', 'Ampliar foto: ' + $('img', tile).alt);
+                function activate() {
+                    if (n !== active) { touched(); goTo(n); return; }
+                    lightbox.open(tiles, t);
+                }
+                tile.addEventListener('click', function () { if (!dragged && n === active) lightbox.open(tiles, t); });
+                tile.addEventListener('keydown', function (event) {
+                    if (event.key !== 'Enter' && event.key !== ' ') return;
+                    event.preventDefault();
+                    activate();
+                });
+            });
+        });
+
+        viewport.scrollLeft = centerOf(items[0]) - viewport.clientWidth / 2;
+        update();
+    });
+
+    // Abas acessíveis (metas, MBTI)
     $$('[data-tabs]').forEach(function (root) {
         const tabs = $$('[role="tab"]', root);
         const panels = tabs.map(function (tab) { return document.getElementById(tab.getAttribute('aria-controls')); });
