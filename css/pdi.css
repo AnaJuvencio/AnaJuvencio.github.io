@@ -2003,6 +2003,79 @@ html:not(.pdi-js) .pdi-goal-list {
 }
 
 /* ---------- Perfis DISC e MBTI ---------- */
+.pdi-profiles {
+    scroll-margin-top: 9.5rem;
+}
+
+.pdi-profiles-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    padding-bottom: 1.5rem;
+}
+
+.pdi-profiles-controls button {
+    display: grid;
+    width: 2.6rem;
+    height: 2.6rem;
+    place-items: center;
+    border: 1px solid var(--p-line);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--p-bronze);
+    cursor: pointer;
+}
+
+.pdi-profiles-controls button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.pdi-profiles-count {
+    min-width: 7rem;
+    color: var(--p-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.pdi-js .pdi-profiles-viewport {
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    cursor: grab;
+}
+
+.pdi-js .pdi-profiles-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.pdi-js .pdi-profiles-viewport.is-dragging {
+    scroll-snap-type: none;
+    cursor: grabbing;
+    user-select: none;
+}
+
+.pdi-js .pdi-profiles-viewport > .pdi-section {
+    flex: 0 0 100%;
+    min-width: 0;
+    padding-bottom: 1.5rem;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+.pdi-js .pdi-profiles-viewport > .pdi-band::before {
+    width: 100%;
+}
+
+html:not(.pdi-js) .pdi-profiles-controls {
+    display: none;
+}
+
 .pdi-disc-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2557,6 +2630,11 @@ html:not(.pdi-js) .pdi-mbti-panel + .pdi-mbti-panel {
 }
 
 /* ---------- Impressão: mostra todo o conteúdo ---------- */
+@page {
+    size: A4;
+    margin: 15mm;
+}
+
 @media print {
     .pdi-lightbox,
     .header,
@@ -2567,6 +2645,7 @@ html:not(.pdi-js) .pdi-mbti-panel + .pdi-mbti-panel {
     .pdi-hero-actions,
     .pdi-switch,
     .pdi-tl-controls,
+    .pdi-profiles-controls,
     .pdi-tl-track::before,
     .pdi-tl-track::after,
     .pdi-goal-list,
@@ -2580,10 +2659,29 @@ html:not(.pdi-js) .pdi-mbti-panel + .pdi-mbti-panel {
     .pdi-page {
         padding: 0;
         background: #fff;
+        overflow: visible;
     }
 
     .pdi-container {
         width: 100%;
+    }
+
+    .pdi-comp-layout,
+    .pdi-goals {
+        display: block;
+    }
+
+    .pdi-radar-card {
+        position: static;
+        max-width: 13cm;
+        margin: 0 auto 1rem;
+        break-inside: avoid;
+    }
+
+    .pdi-js .pdi-profiles-viewport {
+        display: block;
+        height: auto !important;
+        overflow: visible;
     }
 
     .pdi-hero,
@@ -2606,10 +2704,24 @@ html:not(.pdi-js) .pdi-mbti-panel + .pdi-mbti-panel {
     }
 
     .pdi-tl-track {
-        display: grid;
+        display: block;
         width: auto;
         padding: 0;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pdi-tl-item {
+        display: block;
+        margin-bottom: 1rem;
+        break-inside: auto;
+    }
+
+    .pdi-tl-marker {
+        display: none;
+    }
+
+    .pdi-tl-media {
+        height: 7cm;
+        aspect-ratio: auto;
     }
 
     .pdi-js .pdi-tl-item:not(.is-active) .pdi-tl-card {
@@ -2635,7 +2747,7 @@ html:not(.pdi-js) .pdi-mbti-panel + .pdi-mbti-panel {
         border-top: 1px dashed var(--p-line);
     }
 
-    .pdi-tl-item {
+    .pdi-tl-face {
         break-inside: avoid;
     }
 
@@ -2676,7 +2788,7 @@ html:not(.pdi-js) .pdi-mbti-panel + .pdi-mbti-panel {
 
     .pdi-card,
     .pdi-shift-card,
-    .pdi-group,
+    .pdi-comp,
     .pdi-disc,
     .pdi-goal-panel {
         break-inside: avoid;

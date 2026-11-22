@@ -65,7 +65,7 @@
         const links = $$('a', nav);
         const spy = new IntersectionObserver(function (entries) {
             entries.forEach(function (entry) {
-                if (!entry.isIntersecting) return;
+                if (!entry.isIntersecting || entry.target.inert) return;
                 links.forEach(function (link) {
                     const active = link.getAttribute('href') === '#' + entry.target.id;
                     if (active) {
@@ -79,6 +79,89 @@
             });
         }, { rootMargin: '-35% 0px -55% 0px' });
         $$('main section[id]').forEach(function (section) { spy.observe(section); });
+    }
+
+    const profiles = $('[data-profiles]');
+    if (profiles) {
+        const viewport = $('.pdi-profiles-viewport', profiles);
+        const slides = $$('.pdi-section', viewport);
+        const previous = $('[data-profile-prev]', profiles);
+        const next = $('[data-profile-next]', profiles);
+        const count = $('.pdi-profiles-count', profiles);
+        let active = 0;
+        let dragging = false;
+        let dragged = false;
+        let startX = 0;
+        let startScroll = 0;
+
+        function updateProfiles() {
+            active = Math.max(0, Math.min(slides.length - 1, Math.round(viewport.scrollLeft / viewport.clientWidth)));
+            slides.forEach(function (slide, index) { slide.inert = index !== active; });
+            previous.disabled = active === 0;
+            next.disabled = active === slides.length - 1;
+            count.textContent = (slides[active].dataset.profileLabel || slides[active].id.toUpperCase()) + ' · ' + (active + 1) + ' de ' + slides.length;
+            viewport.style.height = slides[active].offsetHeight + 'px';
+            const bounds = profiles.getBoundingClientRect();
+            if (nav && bounds.top < window.innerHeight * 0.65 && bounds.bottom > window.innerHeight * 0.35) {
+                $$('a', nav).forEach(function (link) {
+                    if (link.getAttribute('href') === '#' + slides[active].id) link.setAttribute('aria-current', 'true');
+                    else link.removeAttribute('aria-current');
+                });
+            }
+        }
+
+        function showProfile(index) {
+            viewport.scrollTo({ left: Math.max(0, Math.min(slides.length - 1, index)) * viewport.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+        }
+
+        previous.addEventListener('click', function () { showProfile(active - 1); });
+        next.addEventListener('click', function () { showProfile(active + 1); });
+        viewport.addEventListener('scroll', updateProfiles, { passive: true });
+        viewport.addEventListener('keydown', function (event) {
+            if (event.target !== viewport || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) return;
+            event.preventDefault();
+            showProfile(active + (event.key === 'ArrowRight' ? 1 : -1));
+        });
+        viewport.addEventListener('pointerdown', function (event) {
+            if (event.pointerType !== 'mouse' || event.button !== 0 || event.target.closest('button, a')) return;
+            dragging = true;
+            dragged = false;
+            startX = event.clientX;
+            startScroll = viewport.scrollLeft;
+        });
+        window.addEventListener('pointermove', function (event) {
+            if (!dragging) return;
+            const delta = event.clientX - startX;
+            if (Math.abs(delta) > 5) {
+                dragged = true;
+                viewport.classList.add('is-dragging');
+            }
+            if (dragged) viewport.scrollLeft = startScroll - delta;
+        });
+        window.addEventListener('pointerup', function () {
+            if (!dragging) return;
+            dragging = false;
+            viewport.classList.remove('is-dragging');
+            if (dragged) showProfile(active);
+        });
+        $$('#pdi-nav a').filter(function (link) {
+            return slides.some(function (slide) { return link.getAttribute('href') === '#' + slide.id; });
+        }).forEach(function (link) {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                history.replaceState(null, '', link.getAttribute('href'));
+                profiles.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+                showProfile(slides.findIndex(function (slide) { return link.getAttribute('href') === '#' + slide.id; }));
+            });
+        });
+        window.addEventListener('resize', function () { viewport.scrollLeft = active * viewport.clientWidth; updateProfiles(); });
+        if ('ResizeObserver' in window) {
+            const profileResize = new ResizeObserver(function () { updateProfiles(); });
+            slides.forEach(function (slide) { profileResize.observe(slide); });
+        }
+        const initialProfile = slides.findIndex(function (slide) { return location.hash === '#' + slide.id; });
+        if (initialProfile > 0) viewport.scrollLeft = initialProfile * viewport.clientWidth;
+        updateProfiles();
     }
 
     // Foto ampliada: abre ao clicar numa foto do mosaico e volta para a miniatura ao fechar
